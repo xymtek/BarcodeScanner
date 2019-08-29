@@ -243,6 +243,12 @@ public final class CameraViewController: UIViewController {
       captureSession.addInput(newInput)
       captureSession.commitConfiguration()
       flashButton.isHidden = position == .front
+        
+        if captureDevice?.isFocusModeSupported(.continuousAutoFocus) ?? false {
+            try! captureDevice?.lockForConfiguration()
+            captureDevice?.focusMode = .continuousAutoFocus
+            captureDevice?.unlockForConfiguration()
+        }
     } catch {
       delegate?.cameraViewController(self, didReceiveError: error)
       return
